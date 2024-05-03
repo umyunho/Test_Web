@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test_1</title>
+    <style type="text/css">
+
+        img{width:800px; height:500px;}
+
+        .view{position:relative; width: 800px; height: 500px; border: 2px solid blue;  overflow: hidden; }
+
+        .imgs{position:absolute; width: 4800px;  height: 500px; border: 1px solid red; left: 0; top: 0; transition: 0.3s;}
+
+        #BB{position: absolute; width: 800px; height: 100px; bottom: 0px; right: 0px; background: black; opacity: 0.5; }
+
+        #head{position: relative; font-size: 120%; color: white; width: 100px;}
+        
+        #remote{position: absolute; border: 1px solid white; width: 300px; height: 100px; bottom: 0px; right: 0px; text-align: center;}
+        
+        ul{list-style: none; padding:20px; margin: 7; display: inline-block;}
+        
+        li{display: inline-block; width: 25px; height: 25px; border-radius: 50%; background: white; margin: 4px; text-align: center; transition: 0.3s;}
+        
+        .selected{width: 40px; border-radius: 30%; } /* 선택된 버튼 스타일 변경 */
+    </style>
+    <script type="text/javascript">
+        window.onload = function() {
+            var currentIndex = 0;
+            var images = document.querySelectorAll('.imgs img');
+            var totalImages = images.length;
+            var intervalId;
+
+            function move(index) {
+                currentIndex = index;
+                var position = -currentIndex * 800; // 이미지 너비
+                document.querySelector('.imgs').style.left = position + 'px';
+                updateButtons();
+                clearInterval(intervalId);
+                intervalId = setInterval(autoMove, 2000); // 2초마다 자동으로 넘기기
+            }
+
+            function autoMove() {
+                currentIndex = (currentIndex + 1) % totalImages;
+                var position = -currentIndex * 800; // 이미지 너비
+                document.querySelector('.imgs').style.left = position + 'px';
+                updateButtons();
+            }
+
+            function updateButtons() {
+                var buttons = document.querySelectorAll('#remote li');
+                for (var i = 0; i < buttons.length; i++) {
+                    if (i === currentIndex) {
+                        buttons[i].classList.add('selected');
+                    } else {
+                        buttons[i].classList.remove('selected');
+                    }
+                }
+            }
+
+            intervalId = setInterval(autoMove, 2000); // 2초마다 자동으로 넘기기
+
+            // 이벤트 바인딩
+            var buttons = document.querySelectorAll('#remote li');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function() {
+                    move(parseInt(this.id.replace('btn', ''), 10));
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="view">
+        <div class="imgs" id="imgs">
+            <img src="images/Desert.jpg"><img src="images/Tulips.jpg"><img src="images/Jellyfish.jpg"><img src="images/Lighthouse.jpg"><img src="images/Chrysanthemum.jpg"><img src="images/Koala.jpg">
+        </div>
+        <div id="BB">
+            <h1 class="head" id="head1">img1
+                <h2>법률은 특별한 규정이 없는 한 공포한 날로부터 20일을 경과함으로써 효력을 발생한다. 헌법재판소 재판관의 임기는 6년으로 하며, 법률이 정하는 바에 의하여 연임할 수 있다.
+                </h2>
+            </h1>
+               
+            <h1>img2</h1>
+            <h1>img3</h1>
+            <h1>img4</h1>
+            <h1>img5</h1>
+            <h1>img6</h1>
+        </div>
+        <div id="remote">
+            <ul>
+                <li id="btn0"></li>
+                <li id="btn1"></li>
+                <li id="btn2"></li>
+                <li id="btn3"></li>
+                <li id="btn4"></li>
+                <li id="btn5"></li>              
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
